@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
-import { Link } from '@inertiajs/inertia-react';
-import { Transition } from '@headlessui/react';
+import React, { useState, useContext } from "react";
+import { Link } from "@inertiajs/inertia-react";
+import { Transition } from "@headlessui/react";
 
 interface ContextType {
-    open: boolean,
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    toggleOpen: React.MouseEventHandler<HTMLDivElement>,
+    open: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    toggleOpen: React.MouseEventHandler<HTMLDivElement>;
 }
 
 interface Children {
@@ -17,14 +17,14 @@ type ContentProps = {
     width?: string;
     contentClasses?: string;
     children: React.ReactNode;
-}
+};
 
 type DropdownLinkProps = {
     href: string;
     method?: string;
     as?: string;
     children: React.ReactNode;
-}
+};
 
 const DropDownContext = React.createContext<ContextType>({} as ContextType);
 
@@ -49,26 +49,36 @@ const Trigger = ({ children }: Children) => {
         <>
             <div onClick={toggleOpen}>{children}</div>
 
-            {open && <div className="fixed inset-0 z-40" onClick={() => setOpen(false)}></div>}
+            {open && (
+                <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setOpen(false)}
+                ></div>
+            )}
         </>
     );
 };
 
-const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-white', children }: ContentProps) => {
+const Content = ({
+    align = "right",
+    width = "48",
+    contentClasses = "py-1 bg-white",
+    children,
+}: ContentProps) => {
     const { open, setOpen } = useContext(DropDownContext);
 
-    let alignmentClasses = 'origin-top';
+    let alignmentClasses = "origin-top";
 
-    if (align === 'left') {
-        alignmentClasses = 'origin-top-left left-0';
-    } else if (align === 'right') {
-        alignmentClasses = 'origin-top-right right-0';
+    if (align === "left") {
+        alignmentClasses = "origin-top-left left-0";
+    } else if (align === "right") {
+        alignmentClasses = "origin-top-right right-0";
     }
 
-    let widthClasses = '';
+    let widthClasses = "";
 
-    if (width === '48') {
-        widthClasses = 'w-48';
+    if (width === "48") {
+        widthClasses = "w-48";
     }
 
     return (
@@ -77,7 +87,7 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-whit
                 show={open}
                 enter="transition ease-out duration-200"
                 enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
+                enterTo="opacity-100"
                 leave="transition ease-in duration-75"
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
@@ -87,7 +97,12 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-whit
                         className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
                         onClick={() => setOpen(false)}
                     >
-                        <div className={`rounded-md ring-1 ring-black ring-opacity-5 ` + contentClasses}>
+                        <div
+                            className={
+                                `rounded-md ring-1 ring-black ring-opacity-5 ` +
+                                contentClasses
+                            }
+                        >
                             {children}
                         </div>
                     </div>
@@ -97,7 +112,12 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-whit
     );
 };
 
-const DropdownLink = ({ href, method = 'post', as = 'a', children }: DropdownLinkProps) => {
+const DropdownLink = ({
+    href,
+    method = "post",
+    as = "a",
+    children,
+}: DropdownLinkProps) => {
     return (
         <Link
             href={href}
